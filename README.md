@@ -38,8 +38,8 @@ fn main() {
 
 Add the following to the `[dependencies]` section of your `Cargo.toml`.
 
-```text
-bevy_enum_filter = "0.3.0"
+```toml
+bevy_enum_filter = "0.5.0"
 ```
 
 ## 🤨 How it works
