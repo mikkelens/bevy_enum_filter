@@ -85,7 +85,7 @@ pub fn derive_enum_filter(item: TokenStream) -> TokenStream {
                     let entity = commands.id();
                     let mut commands = commands.commands();
 
-                    commands.add(move |world: &mut #bevy::ecs::world::World| {
+                    commands.queue(move |world: &mut #bevy::ecs::world::World| {
                         let mut entity_mut = world.entity_mut(entity);
                         if !entity_mut.contains::<#mod_ident::#variants>() {
                             // Only insert the marker if it doesn't already exist
@@ -176,7 +176,8 @@ fn get_mod_ident(enum_ident: &Ident) -> Ident {
 }
 
 fn get_crate(name: &str) -> proc_macro2::TokenStream {
-    let found_crate = crate_name(name).expect(&format!("`{}` is present in `Cargo.toml`", name));
+    let found_crate =
+        crate_name(name).unwrap_or_else(|_e| panic!("`{}` is present in `Cargo.toml`", name));
 
     match found_crate {
         FoundCrate::Itself => quote!(crate),
